@@ -31,10 +31,6 @@ spec:
           - /bin/sh
           - '-c'
           - npm run build && npm run start
-        {% comment %} envFrom:
-          - configMapRef:
-              name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
-        {% endcomment %}
         ports:
           - name: registry-http
             containerPort: 3000
