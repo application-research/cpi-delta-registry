@@ -31,13 +31,13 @@ spec:
           - configMapRef:
               name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
         ports:
-          - name: delta-registry-http
+          - name: registry-http
             containerPort: 3005
             protocol: TCP
         readinessProbe:
           httpGet:
             path: /
-            port: delta-registry-http
+            port: registry-http
         resources:
           limits:
             cpu: "{{ $sizeConfig.cpuLimit }}"

@@ -9,8 +9,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: delta-registry-http
+      targetPort: registry-http
       protocol: TCP
-      name: delta-registry-http
+      name: registry-http
   selector:
     app: {{ .Values.global.customer.name }}-{{ .Values.product }}
