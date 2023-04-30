@@ -65,7 +65,7 @@ Create the name of the service account to use
 Tshirt Sizer
 */}}
 {{- define "cpi-delta-registry.getSizeConfig" -}}
-{{- $tshirtSize := index $.Values.global.products.delta.tshirtSize }}
+{{- $tshirtSize := index $.Values.global.products.delta_registry.tshirtSize }}
 {{- $sizeConfig := index $.Values.sizes $tshirtSize }}
 {{- $sizeConfig | toYaml | nindent 0 }}
 {{- end }}

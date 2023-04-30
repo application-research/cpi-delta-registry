@@ -73,6 +73,6 @@ global:
   customer:
     name: testcustomer
   products:
-    delta:
+    delta_registry:
       tshirtSize: basic
-      ingressName: testcustomer.delta.estuary.tech
+      ingressName: testcustomer.registry.estuary.tech

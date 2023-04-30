@@ -9,7 +9,7 @@ metadata:
     kubernetes.io/tls-acme: "true"
 spec:
   rules:
-  - host: {{ .Values.global.products.delta.ingressName }}
+  - host: {{ .Values.global.products.delta_registry.ingressName }}
     http:
       paths:
       - path: /
