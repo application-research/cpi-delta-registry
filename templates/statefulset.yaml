@@ -32,7 +32,7 @@ spec:
               name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
         ports:
           - name: registry-http
-            containerPort: 3005
+            containerPort: 3000
             protocol: TCP
         readinessProbe:
           httpGet:
