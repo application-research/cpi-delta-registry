@@ -31,10 +31,10 @@ spec:
           - /bin/sh
           - '-c'
           - npm run build && npm run start
-        envFrom:
+        {% comment %} envFrom:
           - configMapRef:
               name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
-              key: config.env
+        {% endcomment %}
         ports:
           - name: registry-http
             containerPort: 3000
@@ -58,4 +58,6 @@ spec:
         - name: config-volume
           configMap:
             name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
-            path: config.env
+            items:
+              - key: config.env
+                path: config.env
