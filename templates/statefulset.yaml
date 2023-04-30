@@ -1,0 +1,47 @@
+{{- $sizeConfig := include "cpi-delta-registry.getSizeConfig" . | fromYaml }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.global.customer.name }}-{{ .Values.product }}
+  namespace: customer-{{ .Values.global.customer.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+  labels:
+    app: {{ .Values.global.customer.name }}-{{ .Values.product }}
+spec:
+  serviceName: {{ .Values.global.customer.name }}-{{ .Values.product }}
+  podManagementPolicy: "Parallel"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Values.global.customer.name }}-{{ .Values.product }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.customer.name }}-{{ .Values.product }}
+      annotations:
+        kubernetes.io/ingress-bandwidth: {{ $sizeConfig.ingressBandwidth }}
+        kubernetes.io/egress-bandwidth: {{ $sizeConfig.egressBandwidth }}
+    spec:
+      containers:
+      - name: {{ .Values.product }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        workingDir: /app
+        envFrom:
+          - configMapRef:
+              name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
+        ports:
+          - name: delta-registry-http
+            containerPort: 3005
+            protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /
+            port: delta-registry-http
+        resources:
+          limits:
+            cpu: "{{ $sizeConfig.cpuLimit }}"
+            memory: "{{ $sizeConfig.memoryLimit }}"
+          requests:
+            cpu: "{{ $sizeConfig.cpuRequest }}"
+            memory: "{{ $sizeConfig.memoryRequest }}"

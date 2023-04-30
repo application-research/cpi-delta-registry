@@ -1,0 +1,78 @@
+# Default values for customer-provisioned-infrastructure Delta.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: zorlin/delta-registry
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 3005
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+product: delta-registry
+
+tshirtSize: basic
+
+sizes:
+  basic:
+    cpuLimit: "1000m"
+    cpuRequest: "500m"
+    memoryLimit: "2Gi"
+    memoryRequest: "1Gi"
+    ingressBandwidth: "250M"
+    egressBandwidth: "250M"
+
+# These are for testing, and will be overridden by a "real" customer
+global:
+  customer:
+    name: testcustomer
+  products:
+    delta:
+      tshirtSize: basic
+      ingressName: testcustomer.delta.estuary.tech

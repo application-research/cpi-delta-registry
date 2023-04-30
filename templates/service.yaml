@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.customer.name }}-{{ .Values.product }}
+  namespace: customer-{{ .Values.global.customer.name }}
+  labels:
+    {{- include "cpi-delta-registry.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: delta-registry-http
+      protocol: TCP
+      name: delta-registry-http
+  selector:
+    app: {{ .Values.global.customer.name }}-{{ .Values.product }}

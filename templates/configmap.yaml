@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
+  namespace: customer-{{ .Values.global.customer.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+data:
+  API_SOURCE: {{ .Values.global.customer.name }}.delta.estuary.tech
+  OWNER: {{ .Values.global.customer.name }}
+  REGISTRY_URL: {{ .Values.global.customer.name }}.registry.estuary.tech
+  FILECOIN_ADDRESS: {{ .Values.global.customer.wallet_address | default "f14wtf7z3k3rx4wtb5s24lwafxkfyuyeewyybz7vi" }}

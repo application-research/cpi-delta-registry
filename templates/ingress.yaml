@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.global.customer.name }}-{{ .Values.product }}-ingress
+  namespace: customer-{{ .Values.global.customer.name }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  rules:
+  - host: {{ .Values.global.products.delta.ingressName }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.global.customer.name }}-{{ .Values.product }}
+            port:
+              name: delta-registry-http
+  tls:
+  - hosts:
+    - {{ .Values.global.products.delta_registry.ingressName }}
+    secretName: {{ .Values.global.customer.name }}-{{ .Values.product }}-tls-secret
