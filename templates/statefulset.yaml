@@ -45,3 +45,14 @@ spec:
           requests:
             cpu: "{{ $sizeConfig.cpuRequest }}"
             memory: "{{ $sizeConfig.memoryRequest }}"
+        volumeMounts:
+            - name: config-volume
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
+            items:
+              - key: data
+                path: .env
