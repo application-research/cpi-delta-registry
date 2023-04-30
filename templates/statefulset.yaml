@@ -27,9 +27,14 @@ spec:
       - name: {{ .Values.product }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         workingDir: /app
+        command:
+          - /bin/sh
+          - '-c'
+          - npm run build && npm run start
         envFrom:
           - configMapRef:
               name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
+              key: config.env
         ports:
           - name: registry-http
             containerPort: 3000
@@ -48,11 +53,9 @@ spec:
         volumeMounts:
             - name: config-volume
               mountPath: /app/.env
-              subPath: .env
+              subPath: config.env
       volumes:
         - name: config-volume
           configMap:
             name: {{ .Values.global.customer.name }}-{{ .Values.product }}-config
-            items:
-              - key: data
-                path: .env
+            path: config.env
